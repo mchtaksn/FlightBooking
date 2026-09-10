@@ -1,0 +1,121 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    @await Component.InvokeAsync("_AdminHeadComponentPartial")
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+
+    @await Component.InvokeAsync("_AdminSidebarComponentPartial")
+
+    @await Component.InvokeAsync("_AdminTopbarComponentPartial")
+
+    @RenderBody()
+
+    <div class="toast-container-custom" id="toastContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+     
+        let sidebarOpen = true;
+
+        function toggleSidebar() {
+            sidebarOpen = !sidebarOpen;
+
+            const sb  = document.getElementById('sidebar');
+            const tb  = document.getElementById('topbar');
+            const mc  = document.getElementById('main-content');
+            const ico = document.getElementById('toggle-icon');
+            const lbl = document.getElementById('toggle-label');
+
+            if (sidebarOpen) {
+                sb?.classList.remove('collapsed');
+                tb?.classList.remove('collapsed');
+                mc?.classList.remove('collapsed');
+                ico?.classList.replace('bi-arrow-bar-right', 'bi-arrow-bar-left');
+                if (lbl) lbl.textContent = 'Küçült';
+            } else {
+                sb?.classList.add('collapsed');
+                tb?.classList.add('collapsed');
+                mc?.classList.add('collapsed');
+                ico?.classList.replace('bi-arrow-bar-left', 'bi-arrow-bar-right');
+                if (lbl) lbl.textContent = '';
+            }
+        }
+
+        /* ── Alt menü aç/kapat ───────────────────────────────────────── */
+        function toggleSub(el, subId) {
+            const sub  = document.getElementById(subId);
+            const chev = el.querySelector('.chevron');
+            if (!sub) return;
+            sub.classList.toggle('open');
+            if (chev) chev.classList.toggle('open');
+        }
+
+        /* ── Aktif sidebar öğesi ─────────────────────────────────────── */
+        function setActive(el) {
+            document.querySelectorAll('.nav-link-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        /* ============================================================
+           DROPDOWN TOGGLE
+           Kullanım: onclick="toggleDD('notif-dd')"
+        ============================================================ */
+        function toggleDD(id) {
+            const dd     = document.getElementById(id);
+            const isOpen = dd.classList.contains('show');
+            // Önce tümünü kapat
+            document.querySelectorAll('.dropdown-menu-custom').forEach(d => d.classList.remove('show'));
+            if (!isOpen) dd.classList.add('show');
+        }
+
+        /* Dropdown dışına tıklandığında kapat */
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.dd-wrapper')) {
+                document.querySelectorAll('.dropdown-menu-custom').forEach(d => d.classList.remove('show'));
+            }
+        });
+
+        /* ============================================================
+           TOAST
+           Kullanım: showToast('Mesaj metni', 'success')
+           type → 'success' | 'danger' | 'warning' | 'info'
+           Tüm sayfa view'larından çağrılabilir.
+        ============================================================ */
+        function showToast(msg, type = 'info') {
+            const icons = {
+                success : 'bi-check-circle-fill',
+                danger  : 'bi-x-circle-fill',
+                warning : 'bi-exclamation-triangle-fill',
+                info    : 'bi-info-circle-fill',
+            };
+
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+
+            const t     = document.createElement('div');
+            t.className = 'toast-item';
+            t.innerHTML = `<i class="bi ${icons[type] ?? icons.info} toast-icon ${type}"></i><span>${msg}</span>`;
+            container.appendChild(t);
+
+            setTimeout(() => {
+                t.style.cssText += 'opacity:0;transform:translateY(20px);transition:.3s;';
+                setTimeout(() => t.remove(), 320);
+            }, 3200);
+        }
+
+    </script>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+﻿@{
+    Layout = null;
+}
+
+<!doctype html>
+<html class="no-js" lang="en">
+        @await Component.InvokeAsync("_DefaultHeadComponentPartial")
+
+<body>
+
+        @await Component.InvokeAsync("_DefaultHeaderComponentPartial")
+
+    <main>
+
+        @await Component.InvokeAsync("_DefaultSliderComponentPartial")
+
+
+        @await Component.InvokeAsync("_BookingAreaComponentPartial")
+
+
+        @await Component.InvokeAsync("_DefaultFeatureSectionComponentPartial")
+
+
+        @await Component.InvokeAsync("_DefaultOfferDealComponentPartial")
+
+
+        @await Component.InvokeAsync("_DefaultDestinationOfferComponentPartial")
+
+
+        @await Component.InvokeAsync("_DefaultPopularDestinationsComponentPartial")
+
+
+        @await Component.InvokeAsync("_DefaultServiceComponentPartial")
+
+
+        @await Component.InvokeAsync("_DefaultFlightStatusComponentPartial")
+
+
+        @await Component.InvokeAsync("_DefaultFrequantlyAskedQuestionComponentPartial")
+       
+        
+
+
+    </main>
+    @await Component.InvokeAsync("_DefaultFooterComponentPartial")
+   
+    @await Component.InvokeAsync("_DefaultScriptsComponentPartial")
+</body>
+</html>
